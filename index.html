@@ -3,35 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Walden - 设计师个人网站</title>
+    <title>Walden - 设计师 & 摄影师</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="animated-background">
-        <div class="shapes-container"></div>
+        <div class="shapes-container" id="shapes-container"></div>
     </div>
-
     <nav>
         <div class="nav-container">
-            <div class="logo">Walden</div>
+            <div class="logo-section">
+                <div class="logo">
+                    <img src="images/profile/logo.png" alt="Walden Logo">
+                </div>
+                <a href="/" class="logo">Walden</a>
+            </div>
             <ul class="menu">
-                <li><a href="index.html" class="active">首页</a></li>
-                <li><a href="works.html">我的作品</a></li>
-                <li><a href="photography.html">我的摄影</a></li>
-                <li><a href="tools.html">我的常用</a></li>
+                <li><a href="#" class="active">首页</a></li>
+                <li><a href="#works">我的作品</a></li>
+                <li><a href="#photography">我的摄影</a></li>
+                <li><a href="#tools">我的常用</a></li>
                 <li><a href="about.html">关于我</a></li>
             </ul>
         </div>
     </nav>
 
     <main>
-        <!-- 第一屏：个人介绍 -->
-        <section class="hero" id="hero">
+        <section class="hero">
             <div class="hero-content">
-                <h1 class="animated-text">Walden</h1>
-                <p class="tagline animated-text">割完麦子，我就往南走</p>
+                <h1>Walden</h1>
+                <p class="tagline">割完麦子，我就往南走</p>
             </div>
         </section>
 
@@ -44,41 +47,29 @@
         </section>
 
         <!-- 第三屏：摄影展示 -->
-        <section class="photography" id="photography">
-            <h2>摄影作品</h2>
+        <section id="photography" class="section">
+            <h2 class="section-title">摄影作品</h2>
             <div class="photography-container">
-                <div class="main-slider">
-                    <!-- 主轮播图将通过JavaScript动态生成 -->
+                <div class="photography-left">
+                    <div class="carousel">
+                        <div class="carousel-inner">
+                            <!-- 轮播图片将通过 JavaScript 动态添加 -->
+                        </div>
+                        <button class="carousel-prev">&lt;</button>
+                        <button class="carousel-next">&gt;</button>
+                        <div class="carousel-dots">
+                            <!-- 轮播指示点将通过 JavaScript 动态添加 -->
+                        </div>
+                    </div>
                 </div>
-                <div class="side-gallery">
-                    <!-- 侧边小图将通过JavaScript动态生成 -->
+                <div class="photography-right">
+                    <div class="photo-grid">
+                        <!-- 小卡片将通过 JavaScript 动态添加 -->
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- 第四屏：联系方式 -->
-        <section class="contact" id="contact">
-            <h2>联系我</h2>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="profile-image">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.0&auto=format&fit=crop&w=400&q=80" alt="Walden">
-                    </div>
-                    <div class="contact-details">
-                        <h3>邮箱联系</h3>
-                        <p><i class="fas fa-envelope"></i> walden@example.com</p>
-                        <h3>微信二维码</h3>
-                        <div class="qr-code">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/ronema" alt="微信二维码">
-                        </div>
-                    </div>
-                </div>
-                <div class="bio">
-                    <h3>关于我</h3>
-                    <p>作为一名充满激情的设计师，我致力于创造优雅而实用的设计解决方案。在过去的几年里，我专注于用户体验设计，努力将复杂的问题转化为简单而优雅的解决方案。</p>
-                </div>
-            </div>
-        </section>
     </main>
 
     <footer>
@@ -87,8 +78,8 @@
         </div>
     </footer>
 
-    <script src="js/images.js"></script>
+    <script src="js/images.js" type="module"></script>
     <script src="js/animations.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.js" type="module"></script>
 </body>
 </html>

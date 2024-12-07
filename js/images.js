@@ -1,88 +1,173 @@
-// 使用Unsplash的图片
-const imageData = {
+// 图片数据配置
+export const imageData = {
     // 作品展示图片
     works: [
         {
-            title: "品牌设计项目",
-            description: "为科技公司打造现代简约的品牌形象",
-            image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.0&auto=format&fit=crop&w=800&q=80",
-            date: "2024-01"
+            id: 1,
+            title: "品牌设计：青年咖啡",
+            description: "为新锐咖啡品牌设计的整体视觉形象",
+            image: "images/coffee-brand.jpg",
+            category: "品牌设计"
         },
         {
-            title: "用户界面设计",
-            description: "移动应用界面的用户体验优化",
-            image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.0&auto=format&fit=crop&w=800&q=80",
-            date: "2023-12"
+            id: 2,
+            title: "界面设计：旅行应用",
+            description: "一款面向年轻人的旅行规划应用",
+            image: "images/travel-app.jpg",
+            category: "UI设计"
         },
         {
-            title: "网站重设计",
-            description: "电商平台的完整改版设计",
-            image: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.0&auto=format&fit=crop&w=800&q=80",
-            date: "2023-11"
+            id: 3,
+            title: "包装设计：茶叶礼盒",
+            description: "传统与现代结合的茶叶包装设计",
+            image: "images/tea-packaging.jpg",
+            category: "包装设计"
         },
         {
-            title: "移动应用设计",
-            description: "健康追踪应用的界面设计",
-            image: "https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?ixlib=rb-4.0.0&auto=format&fit=crop&w=800&q=80",
-            date: "2023-10"
+            id: 4,
+            title: "海报设计：音乐节",
+            description: "2023夏季音乐节主视觉设计",
+            image: "images/music-festival.jpg",
+            category: "平面设计"
         },
         {
-            title: "品牌识别设计",
-            description: "餐饮品牌的整体视觉识别系统",
-            image: "https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.0&auto=format&fit=crop&w=800&q=80",
-            date: "2023-09"
+            id: 5,
+            title: "电商设计：美食APP",
+            description: "外卖配送应用界面设计",
+            image: "images/food-app.jpg",
+            category: "UI设计"
         },
         {
-            title: "包装设计",
-            description: "有机食品系列包装设计",
-            image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.0&auto=format&fit=crop&w=800&q=80",
-            date: "2023-08"
-        },
-        {
-            title: "活动海报设计",
-            description: "音乐节系列宣传海报",
-            image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-4.0.0&auto=format&fit=crop&w=800&q=80",
-            date: "2023-07"
-        },
-        {
-            title: "字体设计",
-            description: "创意字体设计与应用",
-            image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.0&auto=format&fit=crop&w=800&q=80",
-            date: "2023-06"
+            id: 6,
+            title: "品牌设计：瑜伽工作室",
+            description: "瑜伽工作室品牌视觉系统设计",
+            image: "images/yoga-brand.jpg",
+            category: "品牌设计"
         }
     ],
-
-    // 摄影作品
-    photos: [
-        {
-            title: "城市剪影",
-            description: "现代都市的建筑光影",
-            image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.0&auto=format&fit=crop&w=1920&q=80",
-            date: "2024-02"
-        },
-        {
-            title: "自然风光",
-            description: "山川河流的壮丽景色",
-            image: "https://images.unsplash.com/photo-1492724724894-7464c27d0ceb?ixlib=rb-4.0.0&auto=format&fit=crop&w=1920&q=80",
-            date: "2024-01"
-        },
-        {
-            title: "街头生活",
-            description: "城市街头的日常瞬间",
-            image: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.0&auto=format&fit=crop&w=1920&q=80",
-            date: "2023-12"
-        },
-        {
-            title: "建筑艺术",
-            description: "现代建筑的几何美学",
-            image: "https://images.unsplash.com/photo-1488972685288-c3fd157d7c7a?ixlib=rb-4.0.0&auto=format&fit=crop&w=1920&q=80",
-            date: "2023-11"
-        }
-    ],
-
-    // 个人照片
-    profile: {
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.0&auto=format&fit=crop&w=400&q=80",
-        qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/ronema"
+    photography: {
+        featured: [
+            {
+                id: 1,
+                title: "城市剪影",
+                description: "城市建筑的几何美感",
+                image: "images/photos/DSC_4128.jpg",
+                date: "2023-12-01",
+                category: "建筑摄影"
+            },
+            {
+                id: 2,
+                title: "都市风景",
+                description: "现代都市的建筑艺术",
+                image: "images/photos/DSC_4129.jpg",
+                date: "2023-12-01",
+                category: "建筑摄影"
+            },
+            {
+                id: 3,
+                title: "建筑几何",
+                description: "建筑线条的韵律之美",
+                image: "images/photos/DSC_4160.jpg",
+                date: "2023-12-02",
+                category: "建筑摄影"
+            },
+            {
+                id: 4,
+                title: "城市空间",
+                description: "都市空间的视觉探索",
+                image: "images/photos/DSC_4333.jpg",
+                date: "2023-12-03",
+                category: "建筑摄影"
+            }
+        ],
+        grid: [
+            {
+                id: 5,
+                title: "自然光影",
+                description: "光影交错的瞬间",
+                image: "images/photos/DSC_0268.jpg",
+                date: "2023-11-28",
+                category: "风光摄影"
+            },
+            {
+                id: 6,
+                title: "城市印象",
+                description: "都市中的静谧时刻",
+                image: "images/photos/DSC_0307.jpg",
+                date: "2023-11-29",
+                category: "城市风光"
+            },
+            {
+                id: 7,
+                title: "光与影",
+                description: "光影交织的艺术",
+                image: "images/photos/DSC_0332.jpg",
+                date: "2023-11-30",
+                category: "艺术摄影"
+            },
+            {
+                id: 9,
+                title: "建筑之美",
+                description: "现代建筑的几何美学",
+                image: "images/photos/DSC_4129.jpg",
+                date: "2023-12-02",
+                category: "建筑摄影"
+            },
+            {
+                id: 10,
+                title: "城市节奏",
+                description: "都市建筑的韵律感",
+                image: "images/photos/DSC_4160.jpg",
+                date: "2023-12-03",
+                category: "建筑摄影"
+            }
+        ]
     }
 };
+
+/**
+ * 优化图片URL
+ * @param {string} url - 图片路径
+ * @returns {string} 完整的图片URL
+ */
+export function optimizeImageUrl(url) {
+    // 如果是完整URL，直接返回
+    if (url.startsWith('http')) {
+        return url;
+    }
+    
+    // 添加基础路径
+    return url;
+}
+
+/**
+ * 预加载图片
+ * @param {string} url - 图片URL
+ * @returns {Promise} 加载完成的Promise
+ */
+export function preloadImage(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error(`Failed to load image: ${url}`));
+        img.src = optimizeImageUrl(url);
+    });
+}
+
+/**
+ * 获取响应式图片源集
+ * @param {string} url - 原始图片URL
+ * @returns {string} srcset字符串
+ */
+export function getImageSrcSet(url) {
+    try {
+        const sizes = [400, 800, 1200, 1600];
+        return sizes.map(size => {
+            const optimizedUrl = optimizeImageUrl(url);
+            return `${optimizedUrl} ${size}w`;
+        }).join(', ');
+    } catch (error) {
+        console.error('Error generating srcset:', error);
+        return optimizeImageUrl(url);
+    }
+}
