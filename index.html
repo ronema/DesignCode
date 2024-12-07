@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            transition: opacity 0.3s ease-in-out;
+        }
+        img[loading="lazy"] {
+            opacity: 0;
+        }
+        img.loaded {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
     <div class="animated-background">
@@ -16,7 +29,7 @@
         <div class="nav-container">
             <div class="logo-section">
                 <div class="logo">
-                    <img src="images/profile/logo.png" alt="Walden Logo">
+                    <img src="images/profile/logo.png" alt="Walden Logo" loading="lazy" data-src="images/profile/logo.png">
                 </div>
                 <a href="/" class="logo">Walden</a>
             </div>
@@ -89,5 +102,26 @@
     <script src="js/dynamic-background.js"></script>
     <script src="js/works.js"></script>
     <script src="js/mobile-menu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        img.classList.add('loaded');
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px'
+            });
+
+            images.forEach(img => imageObserver.observe(img));
+        });
+    </script>
 </body>
 </html>
