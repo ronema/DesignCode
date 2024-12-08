@@ -15,15 +15,34 @@
     --duration: 10;
 }
 
-body, html {
+body {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     margin: 0;
     padding: 0;
-    height: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: var(--text-color);
-    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-container {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.global-footer {
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    padding: 2rem 0;
     background: transparent;
-    scroll-behavior: smooth;
+    margin-top: auto;
 }
 
 .animated-background {
@@ -152,6 +171,94 @@ nav .menu a.active {
 }
 
 @media (max-width: 768px) {
+    body, html {
+        overscroll-behavior-y: none;
+        overflow-x: hidden;
+    }
+
+    .page-container {
+        scroll-snap-type: none;
+        overflow-y: auto;
+        padding-bottom: 80px; /* 为底部页脚留空间 */
+    }
+
+    section {
+        scroll-snap-align: start;
+        min-height: 100vh;
+        padding: 60px 20px 20px;
+        box-sizing: border-box;
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-content {
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+    }
+
+    .hero p {
+        font-size: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .works-grid,
+    .blog-grid,
+    .podcast-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .work-item,
+    .blog-card,
+    .podcast-item {
+        width: 100%;
+        margin-bottom: 1rem;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .contact-profile {
+        margin-bottom: 1rem;
+    }
+
+    .contact-qr {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto 1rem;
+    }
+
+    .contact-bio {
+        max-width: 100%;
+        padding: 0 20px;
+    }
+
+    .global-footer {
+        width: 100%;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.8rem;
+        padding: 1rem 0;
+        background: transparent;
+        position: relative;
+    }
+
     .nav-container {
         padding: 0 15px;
         height: 60px;
@@ -436,7 +543,81 @@ nav .menu a.active {
 }
 
 .blog-container {
-    display: none;
+    display: block;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.blog-card {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.blog-card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.blog-card-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.blog-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    padding: 0 1rem 1rem;
+}
+
+.blog-card-meta-time {
+    margin-right: 1rem;
+}
+
+@media (max-width: 1024px) {
+    .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .blog-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0 20px;
+    }
+
+    .blog-card {
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+
+    .blog-card-image {
+        height: 250px;
+    }
+
+    .blog-card-content {
+        padding: 0.75rem;
+    }
 }
 
 /* 联系部分 */
@@ -528,43 +709,59 @@ nav .menu a.active {
     font-size: 1rem;
 }
 
+.contact-email-section {
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-email {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.site-footer {
+    text-align: center;
+    padding: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+}
+
+.global-footer {
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    padding: 2rem 0;
+    background: transparent;
+    position: relative;
+    margin-top: auto;
+}
+
 @media (max-width: 768px) {
-    .hero h1 {
-        font-size: 3rem;
-    }
-    
-    .nav-container {
-        padding: 0 15px;
-        height: 60px;
-    }
-
-    .nav-container .logo img {
-        width: 32px;
-        height: 32px;
-    }
-
-    .nav-container .menu {
-        gap: 1rem;
-    }
-
-    .menu a {
-        font-size: 0.9rem;
-        padding: 0.4rem 0.8rem;
-    }
-
-    .works-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+    .global-footer {
         padding: 1rem;
     }
-    
-    .contact-content {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .contact-bio {
-        text-align: center;
+}
+
+.page-end-mark {
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 1rem;
+    padding: 2rem 0;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 2rem;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .page-end-mark {
+        padding: 1rem;
+        font-size: 0.8rem;
     }
 }
 
@@ -751,5 +948,27 @@ nav .menu a.active {
     
     .qr-code {
         margin: 0 auto;
+    }
+}
+
+.site-footer {
+    text-align: center;
+    padding: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.site-origin {
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .site-origin {
+        margin-top: 0.5rem;
     }
 }
