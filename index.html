@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walden - 设计师 & 摄影师</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            transition: opacity 0.3s ease-in-out;
+        }
+        img[loading="lazy"] {
+            opacity: 0;
+        }
+        img.loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background">
+        <div class="shapes-container" id="shapes-container"></div>
+    </div>
+    <nav>
+        <div class="logo">Walden</div>
+        <div class="nav-menu">
+            <a href="about.html">关于</a>
+            <a href="#podcast" class="active">我的播客</a>
+            <button id="dark-mode-toggle" aria-label="切换深色模式">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Walden</h1>
+                <p class="tagline">割完麦子，我就往南走</p>
+            </div>
+        </section>
+
+        <section id="podcast" class="podcast-section container">
+            <h2>我的播客</h2>
+            <div class="podcast-grid">
+                <div class="podcast-item animate-on-scroll hover-effect">
+                    <img src="images/podcast/podcast1-cover.jpg" alt="B端SaaS交互设计" loading="lazy">
+                    <div class="podcast-info">
+                        <h3>B端SaaS系统交互设计要点</h3>
+                        <p>深入解析B端产品设计的核心原则和方法论</p>
+                        <a href="podcasts/b-side-saas-interaction-design.md" target="_blank" class="read-more">阅读全文</a>
+                    </div>
+                </div>
+                <div class="podcast-item animate-on-scroll hover-effect">
+                    <img src="images/podcast/podcast2-cover.jpg" alt="用户体验探讨" loading="lazy">
+                    <div class="podcast-info">
+                        <h3>什么叫™的用户体验</h3>
+                        <p>深入剖析互联网产品用户体验的本质和误区</p>
+                        <a href="podcasts/what-is-user-experience.md" target="_blank" class="read-more">阅读全文</a>
+                    </div>
+                </div>
+                <div class="podcast-item animate-on-scroll hover-effect">
+                    <img src="images/podcast/podcast3-cover.jpg" alt="播客3封面" loading="lazy">
+                    <div class="podcast-info">
+                        <h3>创业故事与商业洞察</h3>
+                        <p>邀请成功企业家分享他们的创业经历和宝贵经验。</p>
+                    </div>
+                </div>
+                <div class="podcast-item animate-on-scroll hover-effect">
+                    <img src="images/podcast/podcast4-cover.jpg" alt="播客4封面" loading="lazy">
+                    <div class="podcast-info">
+                        <h3>全球文化与艺术探索</h3>
+                        <p>深入探讨世界各地的文化现象、艺术趋势和创意表达。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第三屏：摄影展示 -->
+        <section id="photography" class="section">
+            <h2 class="section-title">摄影作品</h2>
+            <div class="photography-container">
+                <div class="photography-left">
+                    <div class="carousel">
+                        <div class="carousel-inner">
+                            <!-- 轮播图片将通过 JavaScript 动态添加 -->
+                        </div>
+                        <button class="carousel-prev">&lt;</button>
+                        <button class="carousel-next">&gt;</button>
+                        <div class="carousel-dots">
+                            <!-- 轮播指示点将通过 JavaScript 动态添加 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="photography-right">
+                    <div class="photo-grid">
+                        <!-- 小卡片将通过 JavaScript 动态添加 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Walden. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/images.js" type="module"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js" type="module"></script>
+    <script src="js/dynamic-background.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        img.classList.add('loaded');
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px'
+            });
+
+            images.forEach(img => imageObserver.observe(img));
+        });
+    </script>
+</body>
+</html>
