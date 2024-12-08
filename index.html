@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Walden - 设计师 & 摄影师</title>
+    <title>Walden - 设计师作品集</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -12,6 +12,7 @@
     <div class="animated-background">
         <div class="shapes-container" id="shapes-container"></div>
     </div>
+
     <nav>
         <div class="nav-container">
             <div class="logo-section">
@@ -21,41 +22,138 @@
                 <a href="/" class="logo">Walden</a>
             </div>
             <ul class="menu">
-                <li><a href="#" class="active">首页</a></li>
+                <li><a href="#hero" class="active">首页</a></li>
                 <li><a href="#works">我的作品</a></li>
-                <li><a href="#podcast">我的播客</a></li>
-                <li><a href="about.html">关于我</a></li>
+                <li><a href="#podcasts">我的播客</a></li>
+                <li><a href="#contact">联系我</a></li>
             </ul>
         </div>
     </nav>
 
-    <main>
-        <section class="hero">
+    <div class="page-container">
+        <section id="hero" class="section">
             <div class="hero-content">
-                <h1>Walden</h1>
-                <p class="tagline">割完麦子，我就往南走</p>
+                <div class="hero-text">
+                    <h1>Walden</h1>
+                    <p>割完麦子，我就往南走</p>
+                </div>
             </div>
         </section>
 
-        <!-- 第二屏：作品展示 -->
-        <section class="works" id="works">
-            <h2>精选作品</h2>
+        <section id="works" class="section">
+            <div class="section-header">
+                <h2>我的作品</h2>
+            </div>
             <div class="works-grid">
-                <!-- 作品卡片将通过JavaScript动态生成 -->
+                <div class="work-item animate-on-scroll hover-effect">
+                    <img id="work-image-1" src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=2070&auto=format&fit=crop&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="医疗服务UX设计" loading="lazy">
+                    <div class="work-info">
+                        <h3>医疗服务数字化体验</h3>
+                        <p>重塑患者就医流程，通过用户中心设计提升医疗服务可用性和满意度</p>
+                    </div>
+                </div>
+                <div class="work-item animate-on-scroll hover-effect">
+                    <img id="work-image-2" src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="金融科技交互设计" loading="lazy">
+                    <div class="work-info">
+                        <h3>金融科技交互优化</h3>
+                        <p>简化复杂的金融产品界面，通过直观的交互设计降低用户认知负担</p>
+                    </div>
+                </div>
+                <div class="work-item animate-on-scroll hover-effect">
+                    <img id="work-image-3" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2070&auto=format&fit=crop&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="教育平台用户体验" loading="lazy">
+                    <div class="work-info">
+                        <h3>在线教育平台体验</h3>
+                        <p>重构学习路径，创造个性化的数字化学习环境，提升学习参与度</p>
+                    </div>
+                </div>
+                <div class="work-item animate-on-scroll hover-effect">
+                    <img id="work-image-4" src="https://images.unsplash.com/photo-1522252234503-e356532cafd5?q=80&w=2070&auto=format&fit=crop&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="智能家居交互设计" loading="lazy">
+                    <div class="work-info">
+                        <h3>智能家居交互系统</h3>
+                        <p>设计直观的智能家居控制界面，平衡科技感与人性化的用户体验</p>
+                    </div>
+                </div>
+                <div class="work-item animate-on-scroll hover-effect">
+                    <img id="work-image-5" src="https://images.unsplash.com/photo-1551650975-87deedd944c3?q=80&w=2070&auto=format&fit=crop&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="企业协作工具设计" loading="lazy">
+                    <div class="work-info">
+                        <h3>企业协作工具重构</h3>
+                        <p>优化团队协作流程，通过用户体验设计提升工作效率和沟通质量</p>
+                    </div>
+                </div>
+                <div class="work-item animate-on-scroll hover-effect">
+                    <img id="work-image-6" src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=2070&auto=format&fit=crop&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="可持续设计创新" loading="lazy">
+                    <div class="work-info">
+                        <h3>可持续设计创新</h3>
+                        <p>探索用户体验与环境可持续性的融合，设计具有社会责任感的产品界面</p>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section id="podcast" class="podcast-section container">
-            <h2>我的播客</h2>
+        <section id="podcasts" class="section">
+            <div class="section-header">
+                <h2>我的播客</h2>
+            </div>
+            <div class="podcasts-container">
+                <div class="podcast-item">
+                    <div class="podcast-cover">
+                        <img id="podcast-image-1" src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=2070&auto=format&fit=crop&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="播客1" loading="lazy">
+                    </div>
+                    <div class="podcast-content">
+                        <div class="podcast-header">
+                            <h3>设计与代码的艺术</h3>
+                            <span class="podcast-date">2024年1月15日</span>
+                        </div>
+                        <p>探讨软件开发中的创意与技术，分享个人成长经历。深入解析编程的美学和工程师的职业发展。</p>
+                    </div>
+                </div>
+                <div class="podcast-item">
+                    <div class="podcast-cover">
+                        <img id="podcast-image-2" src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="播客2" loading="lazy">
+                    </div>
+                    <div class="podcast-content">
+                        <div class="podcast-header">
+                            <h3>创新与设计思维</h3>
+                            <span class="podcast-date">2024年2月20日</span>
+                        </div>
+                        <p>深入解析产品设计背后的思考过程和创新方法。探讨如何在设计中平衡用户需求和技术可行性。</p>
+                    </div>
+                </div>
+                <div class="podcast-item">
+                    <div class="podcast-cover">
+                        <img id="podcast-image-3" src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=2070&auto=format&fit=crop&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="播客3" loading="lazy">
+                    </div>
+                    <div class="podcast-content">
+                        <div class="podcast-header">
+                            <h3>技术趋势与未来展望</h3>
+                            <span class="podcast-date">2024年3月10日</span>
+                        </div>
+                        <p>分享对科技发展的洞察和个人对未来的思考。探讨人工智能、区块链等前沿技术的潜在影响。</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2024 Walden. All rights reserved.</p>
-        </div>
-    </footer>
+        <section id="contact" class="section">
+            <div class="contact-container">
+                <div class="contact-header">
+                    <h2>联系我</h2>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-profile">
+                        <h3>Walden</h3>
+                        <p class="contact-title">体验设计师</p>
+                        <div class="contact-qr">
+                            <img src="./images/profile/wechat.jpg" alt="微信二维码" class="qr-code">
+                        </div>
+                    </div>
+                    <div class="contact-bio">
+                        <p>热衷于通过用户中心的设计理念，将复杂的交互问题转化为直观、优雅的解决方案。致力于创造既美学精致又高效实用的数字产品体验。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <script src="js/images.js" type="module"></script>
     <script src="js/animations.js"></script>

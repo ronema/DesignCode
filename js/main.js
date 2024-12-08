@@ -14,6 +14,8 @@ async function initializePage() {
         renderWorks();
         renderPhotography();
         setupEventListeners();
+        setupFullScreenNavigation();
+        initializeAnimations();
     } catch (error) {
         console.error('Error initializing page:', error);
     }
@@ -45,19 +47,14 @@ function renderWorks() {
         return;
     }
 
-    worksGrid.innerHTML = imageData.works.map(work => `
-        <article class="work-card">
-            <div class="work-image">
-                <img src="${optimizeImageUrl(work.image)}" 
-                     alt="${work.title}" 
-                     loading="lazy">
-            </div>
-            <div class="work-info">
-                <h3>${work.title}</h3>
-                <p>${work.description}</p>
-            </div>
-        </article>
-    `).join('');
+    // 使用已有的 HTML 结构，不再动态渲染
+    // 可以在这里添加额外的交互逻辑
+    worksGrid.querySelectorAll('.work-card').forEach(card => {
+        const img = card.querySelector('img');
+        if (img) {
+            img.src = optimizeImageUrl(img.getAttribute('data-src') || img.src);
+        }
+    });
 }
 
 // 渲染摄影作品
@@ -66,12 +63,17 @@ function renderPhotography() {
     const carouselDots = document.querySelector('.carousel-dots');
     const photoGrid = document.querySelector('.photo-grid');
     
+    if (!carouselInner || !carouselDots) {
+        console.warn('Carousel elements not found');
+        return;
+    }
+    
     // 渲染轮播图
     imageData.photography.featured.forEach((photo, index) => {
         const slide = document.createElement('div');
         slide.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
         slide.innerHTML = `
-            <img src="${photo.image}" alt="${photo.title}">
+            <img src="${optimizeImageUrl(photo.image)}" alt="${photo.title}">
             <div class="photo-info">
                 <h3>${photo.title}</h3>
                 <p>${photo.description}</p>
@@ -88,56 +90,20 @@ function renderPhotography() {
     });
 
     // 渲染网格
-    imageData.photography.grid.slice(0, 4).forEach(photo => {
-        const card = document.createElement('div');
-        card.className = 'photo-card';
-        card.innerHTML = `
-            <img src="${photo.image}" alt="${photo.title}">
-            <div class="photo-info">
-                <h3>${photo.title}</h3>
-                <span class="photo-date">${photo.date}</span>
-            </div>
-        `;
-        photoGrid.appendChild(card);
-    });
-
-    // 设置轮播控制
-    const prevButton = document.querySelector('.carousel-prev');
-    const nextButton = document.querySelector('.carousel-next');
-    
-    prevButton.addEventListener('click', () => {
-        const currentSlide = document.querySelector('.carousel-slide.active');
-        const currentIndex = Array.from(carouselInner.children).indexOf(currentSlide);
-        const prevIndex = (currentIndex - 1 + imageData.photography.featured.length) % imageData.photography.featured.length;
-        goToSlide(prevIndex);
-    });
-
-    nextButton.addEventListener('click', () => {
-        const currentSlide = document.querySelector('.carousel-slide.active');
-        const currentIndex = Array.from(carouselInner.children).indexOf(currentSlide);
-        const nextIndex = (currentIndex + 1) % imageData.photography.featured.length;
-        goToSlide(nextIndex);
-    });
-
-    // 自动轮播
-    let autoplayInterval = setInterval(() => {
-        const currentSlide = document.querySelector('.carousel-slide.active');
-        const currentIndex = Array.from(carouselInner.children).indexOf(currentSlide);
-        const nextIndex = (currentIndex + 1) % imageData.photography.featured.length;
-        goToSlide(nextIndex);
-    }, 5000);
-
-    // 鼠标悬停时暂停轮播
-    const carousel = document.querySelector('.carousel');
-    carousel.addEventListener('mouseenter', () => clearInterval(autoplayInterval));
-    carousel.addEventListener('mouseleave', () => {
-        autoplayInterval = setInterval(() => {
-            const currentSlide = document.querySelector('.carousel-slide.active');
-            const currentIndex = Array.from(carouselInner.children).indexOf(currentSlide);
-            const nextIndex = (currentIndex + 1) % imageData.photography.featured.length;
-            goToSlide(nextIndex);
-        }, 5000);
-    });
+    if (photoGrid) {
+        imageData.photography.grid.slice(0, 4).forEach(photo => {
+            const card = document.createElement('div');
+            card.className = 'photo-card';
+            card.innerHTML = `
+                <img src="${optimizeImageUrl(photo.image)}" alt="${photo.title}">
+                <div class="photo-info">
+                    <h3>${photo.title}</h3>
+                    <span class="photo-date">${photo.date}</span>
+                </div>
+            `;
+            photoGrid.appendChild(card);
+        });
+    }
 }
 
 // 切换轮播图
@@ -180,6 +146,77 @@ function setupEventListeners() {
     });
 }
 
+// 全屏滚动导航
+function setupFullScreenNavigation() {
+    const pageContainer = document.querySelector('.page-container');
+    const sections = document.querySelectorAll('section');
+    let currentSectionIndex = 0;
+    let isScrolling = false;
+
+    function scrollToSection(index) {
+        if (index >= 0 && index < sections.length && !isScrolling) {
+            isScrolling = true;
+            sections[index].scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+            currentSectionIndex = index;
+            
+            // 防止快速连续滚动
+            setTimeout(() => {
+                isScrolling = false;
+            }, 1000);
+        }
+    }
+
+    // 鼠标滚轮事件
+    pageContainer.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        if (isScrolling) return;
+
+        if (e.deltaY > 0) {
+            // 向下滚动
+            if (currentSectionIndex < sections.length - 1) {
+                scrollToSection(currentSectionIndex + 1);
+            }
+        } else {
+            // 向上滚动
+            if (currentSectionIndex > 0) {
+                scrollToSection(currentSectionIndex - 1);
+            }
+        }
+    }, { passive: false });
+
+    // 键盘导航
+    document.addEventListener('keydown', (e) => {
+        if (isScrolling) return;
+
+        switch(e.key) {
+            case 'ArrowDown':
+                if (currentSectionIndex < sections.length - 1) {
+                    scrollToSection(currentSectionIndex + 1);
+                }
+                break;
+            case 'ArrowUp':
+                if (currentSectionIndex > 0) {
+                    scrollToSection(currentSectionIndex - 1);
+                }
+                break;
+        }
+    });
+
+    // 导航菜单滚动
+    const navLinks = document.querySelectorAll('.menu a');
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!isScrolling) {
+                scrollToSection(index);
+            }
+        });
+    });
+}
+
 // 设置作品过滤器
 function setupWorkFilters() {
     // 移除作品过滤器
@@ -205,6 +242,32 @@ function initializeAnimations() {
     animatedElements.forEach(element => {
         element.classList.add('will-animate');
         observer.observe(element);
+    });
+}
+
+// 图片懒加载函数
+function lazyLoadImages() {
+    const images = document.querySelectorAll('img[data-src]');
+    
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                const dataSrc = img.getAttribute('data-src');
+                
+                if (dataSrc) {
+                    img.src = optimizeImageUrl(dataSrc);
+                    img.removeAttribute('data-src');
+                    observer.unobserve(img);
+                }
+            }
+        });
+    }, {
+        rootMargin: '50px'
+    });
+
+    images.forEach(img => {
+        imageObserver.observe(img);
     });
 }
 

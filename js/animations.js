@@ -42,21 +42,45 @@ function createShape() {
     const container = document.createElement('div');
     container.className = 'floating-dot';
     
-    // 随机大小 (5-25px)
-    const size = Math.random() * 20 + 5;
+    // 更多随机性：大小范围更广，更不规则
+    const size = Math.pow(Math.random(), 3) * 15 + 0.5; // 非线性分布，更多小点
     container.style.width = `${size}px`;
     container.style.height = `${size}px`;
     
-    // 随机位置 - 使用更大的范围
-    const randomX = Math.random() * window.innerWidth;
-    const randomY = Math.random() * window.innerHeight;
+    // 如果特别小，添加流星效果
+    if (size < 2) {
+        container.classList.add('tiny');
+        
+        // 添加深度层次
+        const depth = Math.floor(Math.random() * 5) + 1;
+        container.classList.add(`depth-${depth}`);
+        
+        // 为流星添加额外的随机性
+        const scale = Math.random() * 0.5;
+        const opacityMultiplier = Math.random() * 0.8 + 0.2;
+        
+        container.style.setProperty('--scale', scale);
+        container.style.setProperty('--opacity-multiplier', opacityMultiplier);
+    } else {
+        // 为每个圆点添加随机方向和旋转
+        const directionX = Math.random() > 0.5 ? 1 : -1;
+        const directionY = Math.random() > 0.5 ? 1 : -1;
+        const rotation = Math.random();
+        const baseOpacity = Math.random() * 0.2;
+        
+        container.style.setProperty('--direction-x', directionX);
+        container.style.setProperty('--direction-y', directionY);
+        container.style.setProperty('--rotation', rotation);
+        container.style.setProperty('--base-opacity', baseOpacity);
+        
+        container.style.animation = 'fluid-movement 5s infinite alternate';
+    }
+    
+    // 更广泛的随机位置
+    const randomX = Math.random() * (window.innerWidth * 1.2) - (window.innerWidth * 0.1);
+    const randomY = Math.random() * (window.innerHeight * 1.2) - (window.innerHeight * 0.1);
     container.style.left = `${randomX}px`;
     container.style.top = `${randomY}px`;
-    
-    // 加快动画速度：将持续时间缩短为原来的1/10
-    const duration = Math.random() * 1 + 1.5; // 1.5-2.5s
-    container.style.setProperty('--duration', `${duration}s`);
-    container.style.animationDelay = `${Math.random() * -duration}s`; // 负值延迟确保立即开始动画
     
     const dot = createSvgDot();
     container.appendChild(dot);
@@ -77,11 +101,11 @@ function createSvgDot() {
     circle.setAttribute("cy", "5");
     circle.setAttribute("r", "5");
     
-    // 随机 HSL 颜色
-    const hue = Math.floor(Math.random() * 60) + 220; // 220-280 范围的色相（蓝紫色系）
-    const saturation = 75;
-    const lightness = 70;
-    const opacity = Math.random() * 0.7 + 0.3; // 0.3-1.0 的透明度
+    // 更广泛的色彩范围，包括更多蓝紫色调
+    const hue = Math.floor(Math.random() * 100) + 200; // 200-300 范围
+    const saturation = Math.random() * 30 + 60; // 60-90%
+    const lightness = Math.random() * 20 + 60; // 60-80%
+    const opacity = Math.random() * 0.6 + 0.4; // 0.4-1.0 的透明度
     
     circle.setAttribute("fill", `hsla(${hue}, ${saturation}%, ${lightness}%, ${opacity})`);
     svg.appendChild(circle);
@@ -103,31 +127,37 @@ function initMouseHoverEffect() {
             const dotCenterX = rect.left + rect.width / 2;
             const dotCenterY = rect.top + rect.height / 2;
             
-            // 计算距离
-            const dx = mouseX - dotCenterX;
-            const dy = mouseY - dotCenterY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            const distance = Math.sqrt(
+                Math.pow(mouseX - dotCenterX, 2) + 
+                Math.pow(mouseY - dotCenterY, 2)
+            );
             
-            // 定义影响范围
-            const maxDistance = 200;
-            const minDistance = 50;
-            
-            if (distance < maxDistance) {
-                // 计算影响强度
-                const influence = 1 - (distance / maxDistance);
+            if (distance < 100) {
+                // 鼠标靠近时汇聚
+                const angle = Math.atan2(mouseY - dotCenterY, mouseX - dotCenterX);
+                const moveDistance = 100 - distance;
                 
-                // 移动点
-                const moveX = dx * influence * 2;
-                const moveY = dy * influence * 2;
-                
-                dot.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                
-                // 根据距离调整透明度
-                dot.style.opacity = 0.3 + (influence * 0.7);
+                // 对于小圆点（流星）保持原有动画
+                if (dot.classList.contains('tiny')) {
+                    dot.style.opacity = '0.8';
+                } else {
+                    dot.style.transform = `
+                        translate(${Math.cos(angle) * moveDistance}px, ${Math.sin(angle) * moveDistance}px) 
+                        scale(1.5) 
+                        rotate(${Math.random() * 360}deg)
+                    `;
+                    dot.style.opacity = '0.8';
+                    dot.style.animation = 'none';
+                }
             } else {
                 // 恢复原始状态
-                dot.style.transform = 'translate(0, 0)';
-                dot.style.opacity = 1;
+                if (dot.classList.contains('tiny')) {
+                    dot.style.opacity = '0.5';
+                } else {
+                    dot.style.transform = '';
+                    dot.style.opacity = '0.15';
+                    dot.style.animation = 'fluid-movement 5s infinite alternate';
+                }
             }
         });
     });
@@ -199,9 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
 
-// 窗口大小改变时重新初始化
-window.addEventListener('resize', () => {
-    initBackgroundAnimation();
+    // 窗口大小调整时重新初始化背景动画
+    window.addEventListener('resize', debounce(() => {
+        initBackgroundAnimation();
+    }, 250));
+
+    // 添加视差效果监听
+    window.addEventListener('mousemove', debounce(handleParallax, 50));
 });
