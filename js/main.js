@@ -1,4 +1,4 @@
-import { imageData, optimizeImageUrl, getImageSrcSet, preloadImage } from './images.js';
+import { imageData, optimizeImageUrl, getImageSrcSet } from './images.js';
 
 // 状态管理
 const state = {
@@ -22,20 +22,10 @@ async function initializePage() {
 
     // 后台预加载图片
     try {
-        await Promise.all([
-            ...imageData.works.map(work => 
-                preloadImage(work.image).catch(err => 
-                    console.warn(`Failed to preload work image: ${work.image}`, err)
-                )
-            ),
-            ...imageData.photography.map(photo => 
-                preloadImage(photo.image).catch(err => 
-                    console.warn(`Failed to preload photo image: ${photo.image}`, err)
-                )
-            )
-        ]);
+        // 删除本地图片预加载逻辑
+        console.log('Using online images, no local preloading needed');
     } catch (err) {
-        console.warn('Some images failed to preload:', err);
+        console.warn('Image preloading error:', err);
     }
 }
 
@@ -63,10 +53,15 @@ function renderPhotography() {
     const carouselDots = document.querySelector('.carousel-dots');
     const photoGrid = document.querySelector('.photo-grid');
     
+    // 如果轮播图容器不存在，不执行渲染
     if (!carouselInner || !carouselDots) {
-        console.warn('Carousel elements not found');
+        console.log('Carousel containers not found. Skipping photography rendering.');
         return;
     }
+    
+    // 清空现有内容
+    carouselInner.innerHTML = '';
+    carouselDots.innerHTML = '';
     
     // 渲染轮播图
     imageData.photography.featured.forEach((photo, index) => {
@@ -91,6 +86,7 @@ function renderPhotography() {
 
     // 渲染网格
     if (photoGrid) {
+        photoGrid.innerHTML = ''; // 清空现有内容
         imageData.photography.grid.slice(0, 4).forEach(photo => {
             const card = document.createElement('div');
             card.className = 'photo-card';
