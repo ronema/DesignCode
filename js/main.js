@@ -279,39 +279,38 @@ function updateNavHighlight() {
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
     
-    console.log('Current Scroll Position:', scrollY);
-    console.log('Window Height:', windowHeight);
-    
     // 重置所有导航项
     navLinks.forEach(link => link.classList.remove('active'));
     
     // 遍历所有 section
+    let closestSection = null;
+    let minDistance = Infinity;
+    
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
         const sectionId = section.getAttribute('id');
         
-        console.log(`Section ${sectionId}:`, {
-            top: sectionTop,
-            height: sectionHeight,
-            bottom: sectionTop + sectionHeight,
-            scrollY: scrollY
-        });
-        
-        // 更加灵活的高亮判断逻辑
+        // 计算 section 中心点到当前滚动位置的距离
         const sectionMiddle = sectionTop + sectionHeight / 2;
+        const distance = Math.abs(scrollY + windowHeight / 2 - sectionMiddle);
         
-        if (scrollY >= sectionTop - windowHeight / 3 && 
-            scrollY < sectionTop + sectionHeight - windowHeight / 3) {
-            console.log(`Highlighting section: ${sectionId}`);
-            
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                }
-            });
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestSection = section;
         }
     });
+    
+    // 高亮最近的 section
+    if (closestSection) {
+        const closestSectionId = closestSection.getAttribute('id');
+        
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === `#${closestSectionId}`) {
+                link.classList.add('active');
+            }
+        });
+    }
 }
 
 // 添加滚动和调整大小事件监听器
