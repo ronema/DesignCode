@@ -106,6 +106,11 @@ MyWebsite/
 ## 许可证
 MIT License
 
+## GitHub 仓库信息
+- **仓库地址**: https://github.com/ronema/DesignCode
+- **所有者**: ronema
+- **仓库名**: DesignCode
+
 ## 作者
 Walden - 个人设计师 & 摄影师
 [您的名字]
