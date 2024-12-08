@@ -144,6 +144,9 @@ function setupEventListeners() {
             menuToggle.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'
         );
     });
+
+    // 添加滚动事件监听器
+    window.addEventListener('scroll', updateNavHighlight);
 }
 
 // 全屏滚动导航
@@ -268,6 +271,33 @@ function lazyLoadImages() {
 
     images.forEach(img => {
         imageObserver.observe(img);
+    });
+}
+
+// 更新导航菜单高亮
+function updateNavHighlight() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    
+    // 获取当前滚动位置
+    const scrollY = window.scrollY;
+    
+    // 遍历所有 section
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100; // 添加一些偏移量，使切换更自然
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        
+        // 检查当前 section 是否在视窗中
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            // 移除所有导航项的 active 类
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
     });
 }
 
