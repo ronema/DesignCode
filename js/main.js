@@ -10,22 +10,33 @@ const state = {
 // 初始化页面
 async function initializePage() {
     try {
-        // 先渲染内容
+        setupMenuToggle();
         renderWorks();
-        renderPhotography();
         setupEventListeners();
         setupFullScreenNavigation();
-        initializeAnimations();
     } catch (error) {
         console.error('Error initializing page:', error);
     }
+}
 
-    // 后台预加载图片
-    try {
-        // 删除本地图片预加载逻辑
-        console.log('Using online images, no local preloading needed');
-    } catch (err) {
-        console.warn('Image preloading error:', err);
+// 设置菜单切换
+function setupMenuToggle() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menu = document.querySelector('.menu');
+    
+    if (menuToggle && menu) {
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+
+        // 点击菜单项时关闭菜单
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                menu.classList.remove('active');
+            });
+        });
     }
 }
 
@@ -37,112 +48,23 @@ function renderWorks() {
         return;
     }
 
-    // 使用已有的 HTML 结构，不再动态渲染
-    // 可以在这里添加额外的交互逻辑
-    worksGrid.querySelectorAll('.work-card').forEach(card => {
-        const img = card.querySelector('img');
-        if (img) {
-            img.src = optimizeImageUrl(img.getAttribute('data-src') || img.src);
-        }
-    });
-}
-
-// 渲染摄影作品
-function renderPhotography() {
-    const carouselInner = document.querySelector('.carousel-inner');
-    const carouselDots = document.querySelector('.carousel-dots');
-    const photoGrid = document.querySelector('.photo-grid');
-    
-    // 如果轮播图容器不存在，不执行渲染
-    if (!carouselInner || !carouselDots) {
-        console.log('Carousel containers not found. Skipping photography rendering.');
-        return;
-    }
-    
-    // 清空现有内容
-    carouselInner.innerHTML = '';
-    carouselDots.innerHTML = '';
-    
-    // 渲染轮播图
-    imageData.photography.featured.forEach((photo, index) => {
-        const slide = document.createElement('div');
-        slide.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
-        slide.innerHTML = `
-            <img src="${optimizeImageUrl(photo.image)}" alt="${photo.title}">
-            <div class="photo-info">
-                <h3>${photo.title}</h3>
-                <p>${photo.description}</p>
-                <span class="photo-date">${photo.date}</span>
-            </div>
-        `;
-        carouselInner.appendChild(slide);
-
-        // 添加轮播点
-        const dot = document.createElement('div');
-        dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
-        dot.addEventListener('click', () => goToSlide(index));
-        carouselDots.appendChild(dot);
-    });
-
-    // 渲染网格
-    if (photoGrid) {
-        photoGrid.innerHTML = ''; // 清空现有内容
-        imageData.photography.grid.slice(0, 4).forEach(photo => {
-            const card = document.createElement('div');
-            card.className = 'photo-card';
-            card.innerHTML = `
-                <img src="${optimizeImageUrl(photo.image)}" alt="${photo.title}">
-                <div class="photo-info">
-                    <h3>${photo.title}</h3>
-                    <span class="photo-date">${photo.date}</span>
-                </div>
-            `;
-            photoGrid.appendChild(card);
-        });
-    }
-}
-
-// 切换轮播图
-function goToSlide(index) {
-    const slides = document.querySelectorAll('.carousel-slide');
-    const dots = document.querySelectorAll('.carousel-dot');
-    
-    slides.forEach(slide => slide.classList.remove('active'));
-    dots.forEach(dot => dot.classList.remove('active'));
-    
-    slides[index].classList.add('active');
-    dots[index].classList.add('active');
+    // 不再动态渲染图片
+    console.log('Works grid already contains existing content');
 }
 
 // 设置事件监听器
 function setupEventListeners() {
-    // 平滑滚动
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+    const menuLinks = document.querySelectorAll('.menu a');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+            const targetId = link.getAttribute('href').slice(1);
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
             }
         });
     });
-
-    // 响应式导航
-    const menuToggle = document.querySelector('.menu-toggle');
-    const menu = document.querySelector('.menu');
-    
-    menuToggle?.addEventListener('click', () => {
-        menu?.classList.toggle('active');
-        menuToggle.setAttribute('aria-expanded', 
-            menuToggle.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'
-        );
-    });
-
-    // 添加滚动事件监听器
-    window.addEventListener('scroll', updateNavHighlight);
 }
 
 // 全屏滚动导航
@@ -215,115 +137,6 @@ function setupFullScreenNavigation() {
         });
     });
 }
-
-// 设置作品过滤器
-function setupWorkFilters() {
-    // 移除作品过滤器
-}
-
-// 初始化动画
-function initializeAnimations() {
-    // 添加滚动动画
-    const animatedElements = document.querySelectorAll('.work-card, .contact, .bio');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '50px'
-    });
-
-    animatedElements.forEach(element => {
-        element.classList.add('will-animate');
-        observer.observe(element);
-    });
-}
-
-// 图片懒加载函数
-function lazyLoadImages() {
-    const images = document.querySelectorAll('img[data-src]');
-    
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                const dataSrc = img.getAttribute('data-src');
-                
-                if (dataSrc) {
-                    img.src = optimizeImageUrl(dataSrc);
-                    img.removeAttribute('data-src');
-                    observer.unobserve(img);
-                }
-            }
-        });
-    }, {
-        rootMargin: '50px'
-    });
-
-    images.forEach(img => {
-        imageObserver.observe(img);
-    });
-}
-
-// 更新导航菜单高亮
-function updateNavHighlight() {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.menu a');
-    
-    // 获取当前滚动位置
-    const scrollY = window.scrollY;
-    const windowHeight = window.innerHeight;
-    
-    // 重置所有导航项
-    navLinks.forEach(link => link.classList.remove('active'));
-    
-    // 遍历所有 section
-    let closestSection = null;
-    let minDistance = Infinity;
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
-        
-        // 计算 section 中心点到当前滚动位置的距离
-        const sectionMiddle = sectionTop + sectionHeight / 2;
-        const distance = Math.abs(scrollY + windowHeight / 2 - sectionMiddle);
-        
-        if (distance < minDistance) {
-            minDistance = distance;
-            closestSection = section;
-        }
-    });
-    
-    // 高亮最近的 section
-    if (closestSection) {
-        const closestSectionId = closestSection.getAttribute('id');
-        
-        navLinks.forEach(link => {
-            if (link.getAttribute('href') === `#${closestSectionId}`) {
-                link.classList.add('active');
-            }
-        });
-    }
-}
-
-// 添加滚动和调整大小事件监听器
-function setupScrollHighlight() {
-    window.addEventListener('scroll', updateNavHighlight);
-    window.addEventListener('resize', updateNavHighlight);
-    
-    // 初始化时立即调用一次
-    updateNavHighlight();
-}
-
-// 在初始化时设置滚动高亮
-document.addEventListener('DOMContentLoaded', setupScrollHighlight);
 
 // 初始化页面
 document.addEventListener('DOMContentLoaded', initializePage);
