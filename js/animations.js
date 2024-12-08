@@ -17,12 +17,12 @@ function handleBackgroundAnimation() {
 
 // 处理滚动动画
 function handleScrollAnimations() {
-    const elements = document.querySelectorAll('.animated-text, .work-card, .contact-container');
+    const elements = document.querySelectorAll('.fade-in');
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in');
+                entry.target.classList.add('visible');
             }
         });
     }, {
@@ -31,8 +31,6 @@ function handleScrollAnimations() {
     });
     
     elements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
         observer.observe(element);
     });
 }
@@ -142,7 +140,7 @@ function initMouseHoverEffect() {
                     dot.style.opacity = '0.8';
                 } else {
                     dot.style.transform = `
-                        translate(${Math.cos(angle) * moveDistance}px, ${Math.sin(angle) * moveDistance}px) 
+                        translateY(${moveDistance}px) 
                         scale(1.5) 
                         rotate(${Math.random() * 360}deg)
                     `;
