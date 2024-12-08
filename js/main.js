@@ -282,16 +282,26 @@ function updateNavHighlight() {
     // 获取当前滚动位置
     const scrollY = window.scrollY;
     
+    console.log('Current Scroll Position:', scrollY);
+    
     // 遍历所有 section
     sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100; // 添加一些偏移量，使切换更自然
+        const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
         const sectionId = section.getAttribute('id');
         
+        console.log(`Section ${sectionId}:`, {
+            top: sectionTop,
+            height: sectionHeight,
+            bottom: sectionTop + sectionHeight
+        });
+        
         // 检查当前 section 是否在视窗中
         if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            console.log(`Highlighting section: ${sectionId}`);
+            
             // 移除所有导航项的 active 类
-            navLinks.forEach(link => {
+            document.querySelectorAll('.menu a').forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === `#${sectionId}`) {
                     link.classList.add('active');
